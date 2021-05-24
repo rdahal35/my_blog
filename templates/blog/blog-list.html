@@ -2,15 +2,14 @@
 <!--  -->
 
 {% block content %}
-
 <!--  -->
+<h2>Post Lists</h2>
+<br>
 {% for post in posts %}
 <article>
     <time>published: {{ post.published_date }}</time>
     <h2><a href="">{{ post.title }}</a></h2>
-    <p>{{ post.text|linebreaksbr }}</p>
 </article>
 {% endfor %}
 <!--  -->
-
-{% endblock %}
+{% endblock content %}
