@@ -12,3 +12,9 @@ def post_list(request):
 
     posts = Post.objects.all()
     return render(request, 'blog/blog-list.html', {'posts': posts})
+
+
+def post_detail(request, id):
+
+    post = Post.objects.get(id=id)
+    return render(request, 'blog/blog-detail.html', {'post': post})

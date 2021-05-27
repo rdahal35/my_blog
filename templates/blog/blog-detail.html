@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<main>
+    <br>
+    <div class="container blog-content">
+        <div class="row">
+            <img src="{{post.image.url}}" alt="" height="600px" width="auto">
+        </div>
+        <div class="row">
+            <h3>{{post.title}}</h3>
+            <p>{{post.published_date}}</p>
+            <p>{{post.text}}</p>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}
