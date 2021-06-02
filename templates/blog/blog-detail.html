@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block title %}
+Blog Detail
+{% endblock %}
 
 {% block content %}
 
@@ -7,12 +11,18 @@
     <br>
     <div class="container blog-content">
         <div class="row">
+            {% if post.image %}
             <img src="{{post.image.url}}" alt="" height="600px" width="auto">
+            {% else %}
+            <img src="{% static 'img/slide2.jpg' %}" alt="" height="600px" width="auto">
+            {% endif %}
         </div>
         <div class="row">
             <h3>{{post.title}}</h3>
             <p>{{post.published_date}}</p>
-            <p>{{post.text}}</p>
+            <div>
+                {{post.text|safe}}
+            </div>
         </div>
     </div>
 </main>

@@ -1,13 +1,47 @@
 {% extends 'base.html' %}
 <!--  -->
 
+{% block title %}
+Blog List
+{% endblock %}
+
 {% block content %}
 <!--  -->
-<h2>Post Lists</h2>
+<div class="inline">
+    <h2>Post Lists</h2>
+</div>
+<br>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+            <input type="search" id="form1" class="form-control" name="search_str" />
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
 <br>
 {% for post in posts %}
 <article>
-    <h2><a href="{% url 'post_detail' post.id %}">{{ post.title }} - {{ post.published_date }}</a></h2>
+    <div>
+        <h2><a href="{% url 'post_detail' post.id %}">{{ post.title }} - {{post.author.username}} </a></h2>
+        <p>{{ post.published_date }}</p>
+    
+        {% if request.user.id == post.author.id %}
+        <p class="inline">
+            <a href="{% url 'delete-post' post.id %}">Delete</a>
+            <a href="{% url 'edit-post' post.id %}">Edit</a>
+        </p>
+    
+        {% endif %}
+    
+    </div>
 </article>
 {% endfor %}
 <!--  -->

@@ -9,16 +9,34 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link  {% if active == 'ho' %}active {% endif %}" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'post-list' %}">Blog List</a>
+                        <a class="nav-link {% if active == 'li' %}active {% endif %}" href="{% url 'post-list' %}">Blog List</a>
+                        </li>
+                        
+                        {% if request.user.is_active %}
+                        
+                        <li class="nav-item d-flex">
+                            <a class="nav-link {% if active == 'signup' %}active {% endif %}" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        <li class="nav-item d-flex">
+                            <a class="nav-link {% if active == 'addpost' %}active {% endif %}" href="{% url 'add-post' %}">AddPost</a>
+                        </li>
+                        
+                        
+                        {% else %}
+                        <li class="nav-item d-flex">
+                            <a class="nav-link {% if active == 'signup' %}active {% endif %}" href="{% url 'signup' %}">Signup</a>
+                        </li>
+                        <li class="nav-item d-flex">
+                            <a class="nav-link {% if active == 'login' %}active {% endif %}" href="{% url 'login' %}">Login</a>
                     </li>
+                    {% endif %}
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                <div class="d-flex">
+                    <p style="color:red">{{request.user.username}}</p>
+                </div>
             </div>
         </div>
     </nav>
