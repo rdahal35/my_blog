@@ -105,10 +105,7 @@ class Signup(View):
             message = 'Thank you for regestering to our site thank you'
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [email, ]
-            send_mail(subject, message, email_from,
-                     
-                     
-                      recipient_list)
+            # send_mail(subject, message, email_from,recipient_list)
 
             return redirect('index')
 
