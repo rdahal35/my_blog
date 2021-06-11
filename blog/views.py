@@ -108,7 +108,7 @@ class Signup(View):
             send_mail(subject, message, email_from,
                      
                      
-                      recipient_list, fail_silently=False)
+                      recipient_list)
 
             return redirect('index')
 
