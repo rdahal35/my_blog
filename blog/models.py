@@ -13,6 +13,7 @@ class Post(models.Model):
         ("Image"), upload_to="post/images/", null=True, blank=True)
     created_date = models.DateTimeField(('Created Date'), auto_now_add=True)
     published_date = models.DateTimeField(("Published Date"), auto_now=True)
+    is_active = models.BooleanField(("Is Active"), default=False)
 
 
     def __str__(self):

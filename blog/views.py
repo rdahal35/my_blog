@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.views import View
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 from django.contrib.auth import login, authenticate
 
 from .models import Post
@@ -15,7 +18,7 @@ from .forms import LoginForm, SignupForm, CreatePostForm
 
 
 def index(request):
-    posts = Post.objects.all().order_by("-id")[:3]
+    posts = Post.objects.filter(is_active=True).order_by("-id")[:3]
     active = 'ho'
     return render(request, 'index.html', {'posts': posts, 'active': active})
 
@@ -25,7 +28,7 @@ class PostList(View):
     template_name = 'blog/blog-list.html'
 
     def get(self, request, *args, **kwargs):
-        posts = Post.objects.all()
+        posts = Post.objects.filter(is_active=True)
         return render(
             request, self.template_name, {
                 'posts': posts, 'active': self.active}
@@ -33,7 +36,8 @@ class PostList(View):
 
     def post(self, request, *args, **kwargs):
         search_str = request.POST.get("search_str")
-        posts = Post.objects.filter(title__icontains=search_str)
+        posts = Post.objects.filter(
+            title__icontains=search_str, is_active=True)
         return render(
             request, self.template_name, {
                 'posts': posts, 'active': self.active}
@@ -43,6 +47,7 @@ class PostList(View):
 def post_detail(request, id):
     active = 'de'
     post = Post.objects.get(id=id)
+
     return render(request, 'blog/blog-detail.html', {'post': post, 'active': active})
 
 
@@ -88,10 +93,23 @@ class Signup(View):
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
+
+            #  Creating User
             user = User.objects.create_user(
                 username=username, email=email, password=password)
             authenticate(username=username, password=password)
             login(request, user)
+
+            #  Sending email to user
+            subject = 'Welcome to our site'
+            message = 'Thank you for regestering to our site thank you'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email, ]
+            send_mail(subject, message, email_from,
+                     
+                     
+                      recipient_list, fail_silently=False)
+
             return redirect('index')
 
         return render(request, self.template_name, {'active': self.active, 'form': form})
@@ -113,6 +131,7 @@ class AddPost(View):
             post = form.save(commit=False)
             post.author = user
             post.save()
+
             return redirect('post-list')
 
         return render(
